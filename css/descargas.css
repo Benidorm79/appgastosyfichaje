@@ -1,0 +1,25 @@
+.jornada-download-button {
+  background: linear-gradient(135deg, #7c3aed, #a855f7) !important;
+  color: #fff !important;
+  border: 1px solid rgba(124, 58, 237, .35) !important;
+  box-shadow: 0 10px 22px rgba(124, 58, 237, .22) !important;
+  font-weight: 800 !important;
+}
+
+.jornada-download-button:hover {
+  background: linear-gradient(135deg, #6d28d9, #9333ea) !important;
+  color: #fff !important;
+}
+
+.efectivo-kms-download-button {
+  background: linear-gradient(135deg, #0f766e, #14b8a6) !important;
+  color: #fff !important;
+  border: 1px solid rgba(15, 118, 110, .35) !important;
+  box-shadow: 0 10px 22px rgba(15, 118, 110, .22) !important;
+  font-weight: 800 !important;
+}
+
+.efectivo-kms-download-button:hover {
+  background: linear-gradient(135deg, #115e59, #0d9488) !important;
+  color: #fff !important;
+}

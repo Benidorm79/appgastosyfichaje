@@ -1,0 +1,89 @@
+.auditoria-kpi-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-items: stretch;
+}
+
+.auditoria-kpi-grid .kpi-card {
+  min-width: 0;
+}
+
+.auditoria-kpi-grid .kpi-card span {
+  font-size: 15px;
+  line-height: 1.25;
+}
+
+.auditoria-kpi-grid .kpi-card strong {
+  font-size: 28px;
+  line-height: 1.1;
+}
+
+.auditoria-kpi-grid .kpi-card small {
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.audit-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 26px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.audit-cierre {
+  color: #083344;
+  background: #a5f3fc;
+  border: 1px solid rgba(103, 232, 249, 0.7);
+}
+
+.audit-envio {
+  color: #1e1b4b;
+  background: #c4b5fd;
+  border: 1px solid rgba(167, 139, 250, 0.7);
+}
+
+.audit-usuario {
+  color: #064e3b;
+  background: #a7f3d0;
+  border: 1px solid rgba(110, 231, 183, 0.7);
+}
+
+.audit-gasto {
+  color: #451a03;
+  background: #fed7aa;
+  border: 1px solid rgba(251, 146, 60, 0.7);
+}
+
+.audit-seguridad {
+  color: #450a0a;
+  background: #fecaca;
+  border: 1px solid rgba(248, 113, 113, 0.7);
+}
+
+.audit-sistema {
+  color: #0f172a;
+  background: #cbd5e1;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+}
+
+@media (max-width: 1250px) {
+  .auditoria-kpi-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 850px) {
+  .auditoria-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .auditoria-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,56 @@
+.envios-error-text {
+  color: #fecaca;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.envios-detail-row td {
+  background: rgba(15, 23, 42, 0.22);
+  padding-top: 0;
+}
+
+.envios-detail-row details {
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 14px;
+  padding: 12px;
+  background: rgba(15, 23, 42, 0.22);
+}
+
+.envios-detail-row summary {
+  cursor: pointer;
+  font-weight: 800;
+  color: #dbeafe;
+}
+
+.envios-json-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.envios-json-grid h3 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #bfdbfe;
+}
+
+.envios-json-grid pre {
+  max-height: 280px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(2, 6, 23, 0.45);
+  color: #e5e7eb;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+@media (max-width: 900px) {
+  .envios-json-grid {
+    grid-template-columns: 1fr;
+  }
+}

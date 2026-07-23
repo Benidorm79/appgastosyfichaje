@@ -1,0 +1,154 @@
+.ek-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.ek-card{background:#fff;border:1px solid var(--border);border-radius:18px;padding:22px;box-shadow:var(--shadow-soft);margin-bottom:20px}.ek-card h2{margin-bottom:8px}.ek-card h3{margin-top:24px}.ek-route{display:grid;grid-template-columns:1fr 1fr;gap:12px}.ek-total{padding:13px;border-radius:12px;background:#eff6ff;color:#1e3a8a;font-weight:700}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse}th,td{padding:12px;border-bottom:1px solid var(--border-soft);text-align:left}.ek-admin-filter{max-width:420px;margin:0 auto 22px}@media(max-width:760px){.ek-grid,.ek-route{grid-template-columns:1fr}.ek-card{padding:18px}table,thead,tbody,tr,th,td{display:block}thead{display:none}tr{border:1px solid var(--border);border-radius:14px;padding:10px;margin-bottom:12px}td{border:0;padding:6px 4px}}
+/* Gestor visual de rutas */
+.ek-route-planner{display:grid;gap:12px;padding:14px;border:1px solid var(--border-soft,#dbe4ee);border-radius:16px;background:#f8fafc}.ek-route-actions{display:flex;gap:10px;flex-wrap:wrap}.ek-route-stops{display:grid;gap:8px}.ek-route-stop{display:grid;grid-template-columns:34px 1fr 38px;gap:8px;align-items:center}.ek-route-stop-index{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:#e8eef5;color:#003366;font-weight:900}.ek-route-stop button{width:38px;min-height:38px;margin:0;padding:0;border-radius:10px;background:#fee2e2;color:#991b1b;border:1px solid #fecaca}.ek-route-map{display:none;min-height:320px;border-radius:16px;overflow:hidden;border:1px solid #dbe4ee;background:#eef2f7}.ek-route-map.is-ready{display:block}.ek-route-alternatives{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.ek-route-alternatives button{display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin:0;padding:11px 12px;min-height:0;border-radius:12px;background:#fff;color:#334155;border:1px solid #dbe4ee;box-shadow:none}.ek-route-alternatives button.active{background:#eaf3fb;color:#003366;border-color:#0f4c81}.ek-route-alternatives span{font-size:13px;font-weight:700}
+@media(max-width:700px){.ek-route-alternatives{grid-template-columns:1fr}.ek-route-map{min-height:260px}.ek-route-actions>*{width:100%}}
+
+
+/* Separación de mensajes, filtros e historial */
+#form-message {
+  margin: 18px 0 26px;
+}
+
+#form-message:empty {
+  display: none;
+}
+
+.ek-admin-filter {
+  margin-bottom: 28px;
+}
+
+.ek-history {
+  margin-top: 8px;
+}
+
+.ek-history-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.ek-history-heading h2 {
+  margin-bottom: 6px;
+}
+
+.ek-history-export-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ek-history-filter {
+  display: grid;
+  grid-template-columns: minmax(140px, 1fr) minmax(120px, 160px) auto;
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 24px;
+}
+
+.ek-history-filter > div {
+  margin: 0;
+}
+
+.ek-history-filter label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.ek-history-filter select,
+.ek-history-filter input {
+  width: 100%;
+  margin: 0;
+}
+
+.ek-history-filter button {
+  margin: 0;
+  min-height: 42px;
+}
+
+@media (max-width: 760px) {
+  .ek-history-heading {
+    flex-direction: column;
+  }
+
+  .ek-history-export-actions,
+  .ek-history-export-actions a {
+    width: 100%;
+  }
+
+  .ek-history-filter {
+    grid-template-columns: 1fr;
+  }
+
+  .ek-history-filter button {
+    width: 100%;
+  }
+
+  .ek-history td::before {
+    content: attr(data-label);
+    display: block;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+}
+.ek-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 22px 0 28px;
+}
+
+.ek-tabs a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 10px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  color: #334155;
+  background: #fff;
+  text-decoration: none;
+  font-weight: 850;
+}
+
+.ek-tabs a.active {
+  color: #fff;
+  border-color: #0f4c81;
+  background: linear-gradient(135deg, #003366, #0f4c81);
+  box-shadow: 0 10px 24px rgba(15, 76, 129, .22);
+}
+
+.ek-single-card {
+  max-width: 900px;
+  margin: 0 auto 28px;
+}
+
+.ek-export-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 40px !important;
+  padding: 0 16px !important;
+  border-radius: 999px !important;
+  text-decoration: none !important;
+  background: linear-gradient(135deg, #b7f7cf, #8ef0b6) !important;
+  color: #004c46 !important;
+  border: 1px solid rgba(183, 247, 207, .85) !important;
+  box-shadow: 0 8px 18px rgba(142, 240, 182, .22) !important;
+  font-weight: 800 !important;
+}
+
+.ek-export-button:hover {
+  background: linear-gradient(135deg, #a8f3c5, #7ce9a9) !important;
+  color: #003f3a !important;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 620px) {
+  .ek-tabs { grid-template-columns: 1fr; }
+}
