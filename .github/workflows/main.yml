@@ -1,0 +1,2 @@
+- name: Claude Code GitHub Integration
+  uses: nicholaslee119/claude-code-github-action@0.1.1
