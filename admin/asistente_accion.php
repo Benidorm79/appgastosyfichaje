@@ -599,7 +599,10 @@ if ($action === 'upload_document') {
     $catalogItems = is_array($service['catalog_items'] ?? null) ? $service['catalog_items'] : [];
     $catalogSyncFailed = false;
     $serviceStatus = (string)($service['status'] ?? '');
-    if (!in_array($serviceStatus, ['published', 'needs_ocr'], true)) {
+    // 'processing' es la respuesta normal del servicio mientras OpenAI todavía está
+    // indexando el documento en segundo plano: no es un fallo, se completa por sondeo
+    // (acción batch_status / /v1/documents/index-status).
+    if (!in_array($serviceStatus, ['published', 'needs_ocr', 'processing'], true)) {
         if ($vectorStoreId !== '' && $vectorFileId !== '') {
             aiServiceRequest('/v1/documents/status', [
                 'vector_store_id' => $vectorStoreId,
@@ -636,8 +639,10 @@ if ($action === 'upload_document') {
         $note = 'Documento publicado con ' . $catalogRows . ' referencias de precio preparadas para consulta.';
     } elseif ($ocrPages > 0 && $documentStatus === 'published') {
         $note = 'Documento publicado después de reconocer el texto de ' . $ocrPages . ' páginas.';
+    } elseif ($documentStatus === 'processing') {
+        $note = 'Documento recibido. Terminando de prepararlo para consultas…';
     }
-    if ($stableReprocess && ($catalogRows <= 0 || $documentStatus !== 'published')) {
+    if ($stableReprocess && $documentStatus !== 'processing' && ($catalogRows <= 0 || $documentStatus !== 'published')) {
         if ($vectorFileId !== '' && trim((string)($brand['vector_store_id'] ?? '')) !== '') {
             aiServiceRequest('/v1/documents/status', [
                 'vector_store_id' => (string)$brand['vector_store_id'],
@@ -687,6 +692,7 @@ if ($action === 'upload_document') {
     }
     if (
         $stableReprocess
+        && $documentStatus === 'published'
         && $oldVectorFileId !== ''
         && $oldVectorFileId !== $vectorFileId
         && $oldVectorStoreId !== ''
@@ -717,6 +723,12 @@ if ($action === 'upload_document') {
         aiAdminRedirect('error', $ocrNotice, [
             'code' => 'needs_ocr',
             'retryable' => true,
+            'document_id' => $documentId,
+        ]);
+    }
+    if ($documentStatus === 'processing') {
+        aiAdminRedirect('success', 'Documento recibido. Terminando de prepararlo para consultas…', [
+            'status' => 'processing',
             'document_id' => $documentId,
         ]);
     }

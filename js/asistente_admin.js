@@ -196,6 +196,63 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
+    function sleep(ms) {
+      return new Promise(function (resolve) { setTimeout(resolve, ms); });
+    }
+
+    async function fetchBatchStatusItems() {
+      const data = new FormData();
+      data.append('csrf_token', form.elements.csrf_token.value);
+      data.append('action', 'batch_status');
+      data.append('batch_mode', '1');
+      data.append('brand_id', form.elements.brand_id.value);
+      try {
+        const result = await postForm(data);
+        if (!result.validJson || !result.response.ok || result.payload.ok !== true) return null;
+        return result.payload.items || [];
+      } catch (_) {
+        return null;
+      }
+    }
+
+    async function waitForDocumentPublication(task) {
+      const maxAttempts = 40;
+      const intervalMs = 6000;
+      for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+        await sleep(intervalMs);
+        const items = await fetchBatchStatusItems();
+        if (!items) continue;
+        const match = items.find(function (item) {
+          return Number(item.document_id) === task.documentId;
+        });
+        if (!match) continue;
+        if (match.status === 'published') {
+          task.retryDocumentId = 0;
+          task.forceOcr = false;
+          task.retryable = false;
+          task.systemic = false;
+          setTaskStatus(task, 'published', match.message || 'Documento publicado y disponible para consultas.');
+          return;
+        }
+        if (match.status === 'error') {
+          task.retryDocumentId = task.documentId;
+          task.retryable = Boolean(match.retryable);
+          task.systemic = false;
+          setTaskStatus(task, 'error', match.message || 'No se ha podido completar la publicación.');
+          return;
+        }
+        setTaskStatus(task, 'uploading', 'Terminando de indexar el documento…');
+      }
+      task.retryDocumentId = task.documentId;
+      task.retryable = true;
+      task.systemic = false;
+      setTaskStatus(
+        task,
+        'error',
+        'La publicación está tardando más de lo esperado. Usa "Actualizar estado" para comprobarla más tarde.'
+      );
+    }
+
     async function uploadTask(task) {
       if (maximum > 0 && task.file.size > maximum) {
         task.retryable = false;
@@ -236,11 +293,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const result = await postForm(data);
         if (!result.validJson) {
           task.retryable = true;
-          task.systemic = true;
+          task.systemic = false;
           setTaskStatus(
             task,
             'error',
-            'La aplicación no ha recibido una confirmación válida. El resto del lote no se enviará.'
+            'No se ha recibido confirmación para este archivo (puede que tardara demasiado en procesarse). Se podrá reintentar.'
           );
           return;
         }
@@ -258,6 +315,12 @@ document.addEventListener('DOMContentLoaded', function () {
           return;
         }
 
+        if (result.response.ok && payload.ok === true && payload.status === 'processing') {
+          setTaskStatus(task, 'uploading', message || 'Documento recibido. Terminando de prepararlo para consultas…');
+          await waitForDocumentPublication(task);
+          return;
+        }
+
         if (payload.code === 'duplicate' || /ya se hab[ií]a a[nñ]adido|duplicad/i.test(message)) {
           task.retryable = false;
           task.systemic = false;
@@ -272,11 +335,11 @@ document.addEventListener('DOMContentLoaded', function () {
         setTaskStatus(task, 'error', message);
       } catch (_) {
         task.retryable = true;
-        task.systemic = true;
+        task.systemic = false;
         setTaskStatus(
           task,
           'error',
-          'La comunicación se ha interrumpido. El resto del lote no se enviará.'
+          'La comunicación se ha interrumpido para este archivo. Se podrá reintentar.'
         );
       }
     }
